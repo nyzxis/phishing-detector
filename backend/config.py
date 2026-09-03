@@ -11,7 +11,12 @@ class Config:
         # Fix for SQLAlchemy 2.0+ requiring postgresql://
         database_url = database_url.replace("postgres://", "postgresql://", 1)
         
-    SQLALCHEMY_DATABASE_URI = database_url or f"sqlite:///{os.path.join(BASE_DIR, 'phishing_detector.db')}"
+    if database_url:
+        SQLALCHEMY_DATABASE_URI = database_url
+    elif os.environ.get("VERCEL"):
+        SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/phishing_detector.db"
+    else:
+        SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(BASE_DIR, 'phishing_detector.db')}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # Model directories
