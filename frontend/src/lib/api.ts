@@ -1,5 +1,6 @@
-const API_BASE = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL.replace(/\/$/, '')}/api`
+const viteApiUrl = (import.meta as any)?.env?.VITE_API_URL;
+const API_BASE = viteApiUrl
+  ? `${viteApiUrl.replace(/\/$/, '')}/api`
   : '/api';
 
 export interface ScanResult {
