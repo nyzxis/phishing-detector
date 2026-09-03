@@ -5,14 +5,16 @@ import sys
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, BASE_DIR)
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from config import Config
 from database import db, ScanRecord
 from ml.url_detector import UrlDetector
 from ml.email_detector import EmailDetector
 
-app = Flask(__name__)
+FRONTEND_DIST = os.path.abspath(os.path.join(BASE_DIR, "..", "frontend", "dist"))
+
+app = Flask(__name__, static_folder=os.path.join(FRONTEND_DIST, "assets"), static_url_path="/assets")
 app.config.from_object(Config)
 CORS(app)
 
@@ -27,6 +29,7 @@ with app.app_context():
     db.create_all()
 
 @app.route("/api/health", methods=["GET"])
+@app.route("/health", methods=["GET"])
 def health():
     return jsonify({
         "status": "online",
@@ -40,6 +43,7 @@ def health():
     })
 
 @app.route("/api/scan/url", methods=["POST"])
+@app.route("/scan/url", methods=["POST"])
 def scan_url():
     data = request.get_json() or {}
     url = data.get("url", "").strip()
@@ -77,6 +81,7 @@ def scan_url():
     })
 
 @app.route("/api/scan/email", methods=["POST"])
+@app.route("/scan/email", methods=["POST"])
 def scan_email():
     data = request.get_json() or {}
     email_text = data.get("email_text", "").strip()
@@ -114,6 +119,7 @@ def scan_email():
     })
 
 @app.route("/api/stats", methods=["GET"])
+@app.route("/stats", methods=["GET"])
 def get_stats():
     total_scans = ScanRecord.query.count()
     if total_scans == 0:
@@ -153,6 +159,7 @@ def get_stats():
     })
 
 @app.route("/api/history", methods=["GET"])
+@app.route("/history", methods=["GET"])
 def get_history():
     scan_type = request.args.get("type")
     query_param = request.args.get("q")
@@ -173,6 +180,7 @@ def get_history():
     })
 
 @app.route("/api/history/<int:record_id>", methods=["DELETE"])
+@app.route("/history/<int:record_id>", methods=["DELETE"])
 def delete_record(record_id):
     record = ScanRecord.query.get(record_id)
     if not record:
@@ -183,10 +191,25 @@ def delete_record(record_id):
     return jsonify({"success": True, "deleted_id": record_id})
 
 @app.route("/api/history", methods=["DELETE"])
+@app.route("/history", methods=["DELETE"])
 def clear_history():
     num_deleted = db.session.query(ScanRecord).delete()
     db.session.commit()
     return jsonify({"success": True, "deleted_count": num_deleted})
+
+# Fallback handler to serve frontend if Vercel routes root to Flask
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def catch_all(path):
+    if path and os.path.exists(os.path.join(FRONTEND_DIST, path)):
+        return send_from_directory(FRONTEND_DIST, path)
+    if os.path.exists(os.path.join(FRONTEND_DIST, "index.html")):
+        return send_from_directory(FRONTEND_DIST, "index.html")
+    return jsonify({
+        "service": "AI-Powered Phishing Detection System API",
+        "status": "online",
+        "notice": "Frontend build artifacts not found in lambda environment. Use /api/health to inspect API."
+    })
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
