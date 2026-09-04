@@ -14,6 +14,20 @@ export default function App() {
   const [stats, setStats] = useState<StatsResponse | null>(null);
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [loadingStats, setLoadingStats] = useState(true);
+  const [theme, setTheme] = useState<'cyber' | 'minimalist'>(() => {
+    const saved = localStorage.getItem('phishguard_theme');
+    return saved === 'minimalist' || saved === 'cyber' ? saved : 'cyber';
+  });
+
+  const isMinimal = theme === 'minimalist';
+
+  const toggleTheme = () => {
+    setTheme((prev) => {
+      const next = prev === 'cyber' ? 'minimalist' : 'cyber';
+      localStorage.setItem('phishguard_theme', next);
+      return next;
+    });
+  };
 
   const fetchDashboardData = async () => {
     try {
@@ -45,36 +59,73 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-[100dvh] bg-[#06080e] text-slate-100 flex flex-col selection:bg-cyan-500/30 selection:text-cyan-200 antialiased">
-      {/* Background Cyber Grid */}
-      <div className="fixed inset-0 cyber-grid-bg opacity-30 pointer-events-none z-0" />
+    <div
+      className={`min-h-[100dvh] flex flex-col antialiased transition-colors duration-300 ${
+        isMinimal
+          ? 'bg-[#F7F6F3] text-[#111111] selection:bg-[#E1F3FE] selection:text-[#1F6C9F]'
+          : 'bg-[#06080e] text-slate-100 selection:bg-cyan-500/30 selection:text-cyan-200'
+      }`}
+    >
+      {/* Background Cyber Grid (cyber mode only) */}
+      {!isMinimal && (
+        <div className="fixed inset-0 cyber-grid-bg opacity-30 pointer-events-none z-0" />
+      )}
 
-      {/* Top Ambient Glow */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[750px] h-[300px] bg-gradient-to-b from-cyan-500/10 via-blue-500/5 to-transparent blur-[140px] pointer-events-none z-0" />
+      {/* Top Ambient Glow (cyber mode only) */}
+      {!isMinimal && (
+        <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[750px] h-[300px] bg-gradient-to-b from-cyan-500/10 via-blue-500/5 to-transparent blur-[140px] pointer-events-none z-0" />
+      )}
 
       {/* Navigation */}
-      <Navbar systemOnline={systemOnline} engineName={engineName} />
+      <Navbar
+        systemOnline={systemOnline}
+        engineName={engineName}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+      />
 
       {/* Main Content Area */}
       <main className="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         {/* Top Hero / Intro Banner */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-6">
+        <div
+          className={`flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 ${
+            isMinimal ? 'border-b border-[#EAEAEA]' : 'border-b border-white/10'
+          }`}
+        >
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-xs font-mono mb-2.5">
+            <div
+              className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono mb-2.5 ${
+                isMinimal
+                  ? 'border border-[#EAEAEA] bg-white text-[#787774]'
+                  : 'border border-cyan-500/30 bg-cyan-500/10 text-cyan-300'
+              }`}
+            >
               <Cpu className="w-3.5 h-3.5" />
               <span>HYBRID AI DEFENSE SYSTEM • ACTIVE INFERENCE</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white font-mono">
+            <h1
+              className={`text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight ${
+                isMinimal ? 'font-serif-editorial text-[#111111]' : 'font-mono text-white'
+              }`}
+            >
               AI Threat Inspector
             </h1>
-            <p className="text-xs sm:text-sm text-white/50 font-mono mt-1.5 max-w-[65ch] leading-relaxed">
+            <p
+              className={`text-xs sm:text-sm mt-1.5 max-w-[65ch] leading-relaxed ${
+                isMinimal ? 'text-[#787774] font-sans-clean' : 'text-white/50 font-mono'
+              }`}
+            >
               Real-time classification and telemetry breakdown for weaponized URLs and deceptive social engineering emails.
             </p>
           </div>
 
           <button
             onClick={fetchDashboardData}
-            className="self-start md:self-auto inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-white/15 bg-white/5 hover:bg-white/10 hover:border-cyan-500/40 text-xs font-mono text-white/70 hover:text-white transition-all active:scale-[0.98]"
+            className={`self-start md:self-auto inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-mono transition-all active:scale-[0.98] ${
+              isMinimal
+                ? 'border border-[#EAEAEA] bg-white hover:bg-[#FBFBFA] text-[#111111] shadow-none'
+                : 'border border-white/15 bg-white/5 hover:bg-white/10 hover:border-cyan-500/40 text-white/70 hover:text-white'
+            }`}
           >
             <RefreshCw className="w-3.5 h-3.5" />
             Refresh Telemetry
@@ -82,17 +133,25 @@ export default function App() {
         </div>
 
         {/* Stats Metrics Grid */}
-        <StatsCards stats={stats} loading={loadingStats} />
+        <StatsCards stats={stats} loading={loadingStats} theme={theme} />
 
         {/* Scanner Workspace */}
         <div className="space-y-4">
           {/* Workspace Tabs */}
-          <div className="flex items-center gap-2 border-b border-white/10 pb-2">
+          <div
+            className={`flex items-center gap-2 pb-2 ${
+              isMinimal ? 'border-b border-[#EAEAEA]' : 'border-b border-white/10'
+            }`}
+          >
             <button
               onClick={() => setActiveTab('url')}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all duration-200 active:scale-[0.98] ${
                 activeTab === 'url'
-                  ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 border border-cyan-500/40 shadow-[0_0_15px_rgba(6,182,212,0.25)]'
+                  ? isMinimal
+                    ? 'bg-[#111111] text-white shadow-none'
+                    : 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 border border-cyan-500/40 shadow-[0_0_15px_rgba(6,182,212,0.25)]'
+                  : isMinimal
+                  ? 'text-[#787774] hover:text-[#111111] hover:bg-black/5 border border-transparent'
                   : 'text-white/40 hover:text-white hover:bg-white/5 border border-transparent'
               }`}
             >
@@ -104,7 +163,11 @@ export default function App() {
               onClick={() => setActiveTab('email')}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all duration-200 active:scale-[0.98] ${
                 activeTab === 'email'
-                  ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 border border-cyan-500/40 shadow-[0_0_15px_rgba(6,182,212,0.25)]'
+                  ? isMinimal
+                    ? 'bg-[#111111] text-white shadow-none'
+                    : 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 border border-cyan-500/40 shadow-[0_0_15px_rgba(6,182,212,0.25)]'
+                  : isMinimal
+                  ? 'text-[#787774] hover:text-[#111111] hover:bg-black/5 border border-transparent'
                   : 'text-white/40 hover:text-white hover:bg-white/5 border border-transparent'
               }`}
             >
@@ -115,18 +178,24 @@ export default function App() {
 
           {/* Active Scanner View */}
           {activeTab === 'url' ? (
-            <UrlScanner onScanComplete={fetchDashboardData} />
+            <UrlScanner onScanComplete={fetchDashboardData} theme={theme} />
           ) : (
-            <EmailScanner onScanComplete={fetchDashboardData} />
+            <EmailScanner onScanComplete={fetchDashboardData} theme={theme} />
           )}
         </div>
 
         {/* Scan History Audit Log */}
-        <ScanHistory history={history} onRefresh={fetchDashboardData} />
+        <ScanHistory history={history} onRefresh={fetchDashboardData} theme={theme} />
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-white/10 py-6 text-center font-mono text-xs text-white/40">
+      <footer
+        className={`relative z-10 py-6 text-center font-mono text-xs transition-colors ${
+          isMinimal
+            ? 'border-t border-[#EAEAEA] bg-[#FBFBFA] text-[#787774]'
+            : 'border-t border-white/10 text-white/40'
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <span>AI-Powered Phishing Detection System • Built by Arfa Danial</span>
           <span>Stack: Python • Scikit-learn • Flask • React 19 • PostgreSQL</span>

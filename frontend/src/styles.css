@@ -3,13 +3,19 @@
 @layer base {
   body {
     font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-    background-color: #06070a;
-    color: #e2e8f0;
   }
 
   code, pre, .font-mono {
     font-family: 'JetBrains Mono', monospace;
   }
+}
+
+.font-serif-editorial {
+  font-family: 'Newsreader', 'Playfair Display', Georgia, serif;
+}
+
+.font-sans-clean {
+  font-family: 'Geist', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* Custom Cyber Security Utilities */
@@ -34,6 +40,17 @@
   background-size: 24px 24px;
 }
 
+/* Minimalist Theme Utilities */
+.minimalist-border {
+  border: 1px solid #EAEAEA;
+}
+
+.minimalist-card {
+  background-color: #FFFFFF;
+  border: 1px solid #EAEAEA;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
@@ -41,14 +58,14 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #06070a;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(150, 150, 150, 0.2);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(6, 182, 212, 0.6);
+  background: rgba(150, 150, 150, 0.4);
 }
