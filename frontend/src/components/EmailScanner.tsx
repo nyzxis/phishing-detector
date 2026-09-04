@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, ArrowRight, Loader2, FileText } from 'lucide-react';
+import { Mail, ArrowRight, Loader2, X } from 'lucide-react';
 import { scanEmail, ScanResult } from '../lib/api';
 import ResultCard from './ResultCard';
 
@@ -50,16 +50,16 @@ export default function EmailScanner({ onScanComplete }: EmailScannerProps) {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-white/10 bg-[#0a0d16]/80 p-6 backdrop-blur-xl">
+      <div className="rounded-2xl border border-white/10 bg-[#0a0d16]/90 p-5 sm:p-7 backdrop-blur-xl transition-all">
         <div className="flex items-center gap-2 text-cyan-400 text-xs font-mono tracking-wider uppercase mb-2">
           <Mail className="w-4 h-4" />
-          RAW EMAIL & HEADER NLP INSPECTOR
+          RAW EMAIL &amp; HEADER NLP INSPECTOR
         </div>
         <h2 className="text-xl sm:text-2xl font-bold font-mono text-white tracking-tight">
           Detect phishing emails using Natural Language Processing
         </h2>
-        <p className="text-xs sm:text-sm text-white/50 font-mono mt-1">
-          Scans for deceptive urgency hooks, credential harvesting triggers, social engineering, and fraudulent links.
+        <p className="text-xs sm:text-sm text-white/50 font-mono mt-1 max-w-[65ch] leading-relaxed">
+          Scans for deceptive urgency hooks, credential harvesting triggers, social engineering, and fraudulent embedded links.
         </p>
 
         {/* Text Area */}
@@ -72,19 +72,28 @@ export default function EmailScanner({ onScanComplete }: EmailScannerProps) {
         >
           <div className="relative">
             <textarea
-              rows={6}
+              rows={5}
               value={emailText}
               onChange={(e) => setEmailText(e.target.value)}
               placeholder="Paste email subject, body text, or headers here..."
-              className="w-full p-4 rounded-xl border border-white/15 bg-black/50 text-sm font-mono text-white placeholder-white/30 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all resize-y"
+              className="w-full p-4 rounded-xl border border-white/15 bg-black/60 text-sm font-mono text-white placeholder-white/30 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition-all resize-y"
             />
+            {emailText && (
+              <button
+                type="button"
+                onClick={() => setEmailText('')}
+                className="absolute top-3 right-3 p-1 rounded-lg text-white/30 hover:text-white hover:bg-white/10"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
           </div>
 
           <div className="flex justify-end">
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-mono font-bold text-xs uppercase tracking-wider transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(6,182,212,0.4)]"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black font-mono font-bold text-xs uppercase tracking-wider transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_20px_rgba(6,182,212,0.3)]"
             >
               {loading ? (
                 <>
@@ -103,7 +112,7 @@ export default function EmailScanner({ onScanComplete }: EmailScannerProps) {
 
         {/* Quick Sample Presets */}
         <div className="mt-4 pt-4 border-t border-white/10 flex flex-wrap items-center gap-2 text-xs font-mono">
-          <span className="text-white/40">Try sample email templates:</span>
+          <span className="text-white/40 text-[11px]">Quick presets:</span>
           {SAMPLE_EMAILS.map((sample, i) => (
             <button
               key={i}
@@ -112,7 +121,7 @@ export default function EmailScanner({ onScanComplete }: EmailScannerProps) {
                 setEmailText(sample.text);
                 handleScan(sample.text);
               }}
-              className="px-2.5 py-1 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all text-[11px]"
+              className="px-2.5 py-1 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 hover:border-cyan-500/40 text-white/70 hover:text-white transition-all text-[11px] active:scale-[0.97]"
             >
               {sample.label}
             </button>
