@@ -1,5 +1,10 @@
 # 🛡️ PHISHGUARD // AI-Powered Phishing Detection System
 
+[![Live Demo](https://img.shields.io/badge/Live_Demo-phishingdetector--nyzxis.vercel.app-06b6d4?style=for-the-badge&logo=vercel&logoColor=white)](https://phishingdetector-nyzxis.vercel.app/)
+[![GitHub](https://img.shields.io/badge/GitHub-nyzxis%2Fphishing--detector-10b981?style=for-the-badge&logo=github&logoColor=white)](https://github.com/nyzxis/phishing-detector)
+
+> **Live Application**: 🌐 **[https://phishingdetector-nyzxis.vercel.app/](https://phishingdetector-nyzxis.vercel.app/)**
+
 A modern full-stack cybersecurity application designed to detect and dissect suspicious URLs and phishing emails in real-time using trained **Machine Learning models (Scikit-learn)**, a **Flask REST API**, a **React 19 + Tailwind CSS** cyber-security dashboard, and dual **SQLite / PostgreSQL** persistence.
 
 Built by **Arfa Danial** ([@nyzxis](https://github.com/nyzxis)).
