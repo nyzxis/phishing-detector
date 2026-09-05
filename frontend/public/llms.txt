@@ -1,0 +1,25 @@
+# PhishGuard - AI Phishing Threat Intelligence & URL Analysis Platform
+
+> PhishGuard is an advanced AI-powered phishing detection engine that performs multi-layered lexical analysis, DNS/WHOIS telemetry extraction, SSL inspection, and NLP heuristics to classify suspicious URLs and email vectors in real time.
+
+## Core Capabilities
+- **Multi-Vector Threat Scanning**: Ingests URLs, domains, and raw email messages to decompose attack surfaces including typosquatting, IDN homograph attacks, brand spoofing, and obfuscated redirects.
+- **Lexical & Structural Analysis**: Computes URL entropy, suspicious keyword densities, subdomain nesting depth, IP-in-URL evasion, and obfuscated encoding patterns.
+- **Network & DNS Telemetry**: Inspects ASN reputation, domain registration age, MX records, DMARC/SPF/DKIM alignments, and SSL certificate issuer authority.
+- **NLP Email Analysis**: Evaluates urgency triggers, spear-phishing syntax, credential harvesting forms, and masquerading sender addresses.
+- **Dual-Theme Design System**: Supports high-density dark cyber telemetry and editorial paper minimalist design systems.
+
+## Architecture
+- **Frontend**: React 19, TypeScript, Tailwind CSS v4, Lucide Icons, Vite.
+- **Backend**: FastAPI / Python microservice with ML classifiers (Random Forest, TF-IDF NLP, heuristics).
+- **Deployment**: Production SPA deployed to Vercel at https://phishingdetector-nyzxis.vercel.app/
+
+## Part of the 5-Part Cybersecurity & AI Defense Suite by Arfa Danial
+1. **APIShield** (API Security Gateway & WAF): https://apishield-pi.vercel.app/
+2. **MalGuard** (AI Malware Scanner & Sandbox): https://malguard.vercel.app/
+3. **VulnShield** (Vulnerability Intelligence & CVE Scanner): https://vulnshield.vercel.app/
+4. **KeyVault** (Password Security Analyzer & Entropy Engine): https://pwsec-nyz.vercel.app/
+5. **PhishGuard** (Phishing URL & Domain Threat Detector): https://phishingdetector-nyzxis.vercel.app/
+
+Author: Arfa Danial (https://nyzxis.vercel.app/)
+Repository: https://github.com/nyzxis/phishing-detector

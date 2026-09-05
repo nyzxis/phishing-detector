@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — URL Target Not Found // PHISHGUARD</title>
+  <meta name="description" content="The requested target or route does not exist in the PhishGuard threat radar registry." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #06080E;
+      --card-bg: rgba(14, 22, 38, 0.85);
+      --accent: #06B6D4;
+      --accent-glow: rgba(6, 182, 212, 0.25);
+      --border: rgba(6, 182, 212, 0.2);
+      --text: #F1F5F9;
+      --muted: #94A3B8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', -apple-system, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(to right, rgba(6, 182, 212, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+    }
+    .radial-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .card {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px 32px;
+      max-width: 580px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(6, 182, 212, 0.1);
+      backdrop-filter: blur(12px);
+      text-align: center;
+      z-index: 10;
+    }
+    .breadcrumb {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .breadcrumb a {
+      color: #38BDF8;
+      text-decoration: none;
+    }
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(6, 182, 212, 0.12);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #38BDF8;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+    }
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      background: #06B6D4;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #06B6D4;
+    }
+    h1 {
+      font-size: 4rem;
+      font-weight: 800;
+      line-height: 1;
+      font-family: 'JetBrains Mono', monospace;
+      background: linear-gradient(135deg, #FFF 30%, #38BDF8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 12px;
+      letter-spacing: -2px;
+    }
+    h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #F8FAFC;
+    }
+    p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    .terminal-trace {
+      background: #060B14;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      text-align: left;
+      color: #94A3B8;
+      margin-bottom: 28px;
+      overflow-x: auto;
+    }
+    .terminal-trace span.err { color: #EF4444; }
+    .terminal-trace span.acc { color: #06B6D4; }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: #06B6D4;
+      color: #06080E;
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.35);
+    }
+    .btn-primary:hover {
+      background: #38BDF8;
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #E2E8F0;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+    .suite-nav {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 20px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--muted);
+    }
+    .suite-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .suite-links a {
+      color: #94A3B8;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+    .suite-links a:hover {
+      color: #38BDF8;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+  <div class="radial-glow"></div>
+
+  <div class="card">
+    <div class="breadcrumb">
+      <a href="https://nyzxis.vercel.app/">✦ Arfa Danial / Portfolio</a>
+      <span>›</span>
+      <a href="/">PhishGuard</a>
+      <span>›</span>
+      <span>404</span>
+    </div>
+
+    <div class="badge">
+      <span class="badge-dot"></span>
+      URL RADAR MISS
+    </div>
+
+    <h1>404</h1>
+    <h2>Route Target Not In Registry</h2>
+    <p>The requested endpoint does not correlate with an active threat radar probe or lexical analysis resource.</p>
+
+    <div class="terminal-trace">
+      <div>[telemetry] <span class="err">ERR_TARGET_UNRESOLVED</span>: 0 hosts matched</div>
+      <div>[dns_probe] recursive_resolver: <span class="acc">NXDOMAIN</span></div>
+      <div>[action] redirecting to PhishGuard threat radar center...</div>
+    </div>
+
+    <div class="actions">
+      <a href="/" class="btn btn-primary">Return to PhishGuard</a>
+      <a href="https://nyzxis.vercel.app/" class="btn btn-secondary">Portfolio Overview</a>
+    </div>
+
+    <div class="suite-nav">
+      <div>CYBERSECURITY SUITE NAVIGATION</div>
+      <div class="suite-links">
+        <a href="https://apishield-pi.vercel.app/">APIShield</a>
+        <span>•</span>
+        <a href="https://malguard.vercel.app/">MalGuard</a>
+        <span>•</span>
+        <a href="https://vulnshield.vercel.app/">VulnShield</a>
+        <span>•</span>
+        <a href="https://pwsec-nyz.vercel.app/">KeyVault</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
