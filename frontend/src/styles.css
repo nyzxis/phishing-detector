@@ -26,7 +26,7 @@
   }
 
   body {
-    font-family: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+    font-family: 'Outfit', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: #08060F;
@@ -34,12 +34,18 @@
 
   body.theme-minimalist {
     background-color: #F5F2EB;
+    font-family: 'Geist', system-ui, -apple-system, sans-serif;
   }
 
   code, pre, .font-mono {
     font-family: 'JetBrains Mono', monospace;
     font-variant-numeric: tabular-nums;
   }
+}
+
+.font-optical {
+  font-family: 'Outfit', 'Space Grotesk', sans-serif;
+  letter-spacing: -0.02em;
 }
 
 .font-serif-editorial {

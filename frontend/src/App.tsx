@@ -119,17 +119,17 @@ export default function App() {
             </div>
 
             <h1
-              className={`text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-[-0.03em] ${
-                isMinimal ? 'font-sans-clean text-[#201B34]' : 'font-mono text-white'
+              className={`text-3xl sm:text-4xl md:text-5xl font-black tracking-tight font-optical ${
+                isMinimal ? 'text-[#201B34]' : 'text-white'
               }`}
               style={{ textWrap: 'balance' }}
             >
-              PHISHGUARD <span className="text-purple-400 font-normal text-2xl sm:text-3xl">// THREAT TELESCOPE</span>
+              PHISHGUARD <span className="text-purple-400 font-light text-2xl sm:text-3xl">// THREAT TELESCOPE</span>
             </h1>
 
             <p
-              className={`text-xs sm:text-sm mt-1.5 max-w-[70ch] leading-relaxed ${
-                isMinimal ? 'text-[#6B667A]' : 'text-white/60 font-mono'
+              className={`text-xs sm:text-sm mt-1.5 max-w-[70ch] leading-relaxed font-mono ${
+                isMinimal ? 'text-[#6B667A]' : 'text-white/60'
               }`}
               style={{ textWrap: 'pretty' }}
             >
@@ -153,57 +153,62 @@ export default function App() {
         {/* Stats Metrics Grid */}
         <StatsCards stats={stats} loading={loadingStats} theme={theme} />
 
-        {/* Scanner Workspace */}
-        <div className="space-y-4">
-          {/* Workspace Reticle Tabs */}
-          <div
-            className={`flex items-center gap-2 pb-2 ${
-              isMinimal ? 'border-b border-[#E0DBCF]' : 'border-b border-[#231B3A]'
-            }`}
-          >
-            <button
-              onClick={() => setActiveTab('url')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-xs font-bold uppercase tracking-wider transition-all duration-150 active:scale-[0.98] ${
-                activeTab === 'url'
-                  ? isMinimal
-                    ? 'bg-[#201B34] text-[#FAF8F2]'
-                    : 'bg-purple-600 text-white shadow-[0_0_15px_rgba(139,92,246,0.35)]'
-                  : isMinimal
-                  ? 'text-[#6B667A] hover:text-[#201B34] hover:bg-black/5'
-                  : 'text-white/40 hover:text-white hover:bg-white/5'
+        {/* Optical Neural Command Center (2-Column Asymmetric Workstation) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* Left Column: Mode Selector & Active Scanner */}
+          <div className="lg:col-span-6 space-y-4">
+            {/* Workspace Reticle Tabs */}
+            <div
+              className={`flex items-center gap-2 pb-2 ${
+                isMinimal ? 'border-b border-[#E0DBCF]' : 'border-b border-[#231B3A]'
               }`}
             >
-              <Globe className="w-3.5 h-3.5" />
-              <span>URL Telescope</span>
-            </button>
+              <button
+                onClick={() => setActiveTab('url')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-xs font-bold uppercase tracking-wider transition-all duration-150 active:scale-[0.98] ${
+                  activeTab === 'url'
+                    ? isMinimal
+                      ? 'bg-[#201B34] text-[#FAF8F2]'
+                      : 'bg-purple-600 text-white shadow-[0_0_15px_rgba(139,92,246,0.35)]'
+                    : isMinimal
+                    ? 'text-[#6B667A] hover:text-[#201B34] hover:bg-black/5'
+                    : 'text-white/40 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <Globe className="w-3.5 h-3.5" />
+                <span>URL Telescope</span>
+              </button>
 
-            <button
-              onClick={() => setActiveTab('email')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-xs font-bold uppercase tracking-wider transition-all duration-150 active:scale-[0.98] ${
-                activeTab === 'email'
-                  ? isMinimal
-                    ? 'bg-[#201B34] text-[#FAF8F2]'
-                    : 'bg-purple-600 text-white shadow-[0_0_15px_rgba(139,92,246,0.35)]'
-                  : isMinimal
-                  ? 'text-[#6B667A] hover:text-[#201B34] hover:bg-black/5'
-                  : 'text-white/40 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              <Mail className="w-3.5 h-3.5" />
-              <span>Email NLP Spectrum</span>
-            </button>
+              <button
+                onClick={() => setActiveTab('email')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-xs font-bold uppercase tracking-wider transition-all duration-150 active:scale-[0.98] ${
+                  activeTab === 'email'
+                    ? isMinimal
+                      ? 'bg-[#201B34] text-[#FAF8F2]'
+                      : 'bg-purple-600 text-white shadow-[0_0_15px_rgba(139,92,246,0.35)]'
+                    : isMinimal
+                    ? 'text-[#6B667A] hover:text-[#201B34] hover:bg-black/5'
+                    : 'text-white/40 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                <Mail className="w-3.5 h-3.5" />
+                <span>Email NLP Spectrum</span>
+              </button>
+            </div>
+
+            {/* Active Scanner View */}
+            {activeTab === 'url' ? (
+              <UrlScanner onScanComplete={fetchDashboardData} theme={theme} />
+            ) : (
+              <EmailScanner onScanComplete={fetchDashboardData} theme={theme} />
+            )}
           </div>
 
-          {/* Active Scanner View */}
-          {activeTab === 'url' ? (
-            <UrlScanner onScanComplete={fetchDashboardData} theme={theme} />
-          ) : (
-            <EmailScanner onScanComplete={fetchDashboardData} theme={theme} />
-          )}
+          {/* Right Column: Historical Audit Stream & Database */}
+          <div className="lg:col-span-6 space-y-4">
+            <ScanHistory history={history} onRefresh={fetchDashboardData} theme={theme} />
+          </div>
         </div>
-
-        {/* Scan History Audit Log */}
-        <ScanHistory history={history} onRefresh={fetchDashboardData} theme={theme} />
       </main>
 
       {/* Footer */}
