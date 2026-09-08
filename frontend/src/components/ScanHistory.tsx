@@ -34,7 +34,7 @@ export default function ScanHistory({ history, onRefresh, theme = 'cyber' }: Sca
   };
 
   const handleClearAll = async () => {
-    if (window.confirm('Are you sure you want to clear all scan history records?')) {
+    if (window.confirm('Are you sure you want to clear all forensic telemetry records?')) {
       try {
         await clearAllHistory();
         onRefresh();
@@ -46,29 +46,29 @@ export default function ScanHistory({ history, onRefresh, theme = 'cyber' }: Sca
 
   return (
     <div
-      className={`rounded-2xl transition-all ${
+      className={`rounded-xl transition-all p-6 sm:p-7 space-y-4 ${
         isMinimal
-          ? 'bg-white border border-[#EAEAEA] p-6 shadow-none space-y-4'
-          : 'border border-white/10 bg-[#0a0d16]/80 p-6 backdrop-blur-xl space-y-4'
+          ? 'minimalist-card'
+          : 'optical-panel'
       }`}
     >
       {/* Header & Controls */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-white/10">
         <div>
           <div
             className={`flex items-center gap-2 text-xs font-mono tracking-wider uppercase mb-1 ${
-              isMinimal ? 'text-[#787774]' : 'text-cyan-400'
+              isMinimal ? 'text-[#6B667A]' : 'text-purple-400'
             }`}
           >
             <History className="w-4 h-4" />
-            TELEMETRY &amp; AUDIT LOG
+            <span>OPTICAL SPECTROGRAPH // AUDIT DATABASE</span>
           </div>
           <h3
             className={`text-lg font-bold tracking-tight ${
-              isMinimal ? 'font-serif-editorial text-[#111111]' : 'font-mono text-white'
+              isMinimal ? 'font-sans-clean text-[#201B34]' : 'font-mono text-white'
             }`}
           >
-            Historical Scan Database ({history.length})
+            Historical Forensic Scan Corpus ({history.length})
           </h3>
         </div>
 
@@ -76,54 +76,54 @@ export default function ScanHistory({ history, onRefresh, theme = 'cyber' }: Sca
           {history.length > 0 && (
             <button
               onClick={handleClearAll}
-              className={`px-3 py-1.5 rounded-lg text-xs font-mono flex items-center gap-1.5 transition-all ${
+              className={`px-3 py-1.5 rounded text-xs font-mono flex items-center gap-1.5 transition-all ${
                 isMinimal
-                  ? 'border border-[#EAEAEA] hover:border-red-300 bg-[#FBFBFA] hover:bg-red-50 text-[#787774] hover:text-[#9F2F2D]'
-                  : 'border border-white/10 hover:border-rose-500/40 bg-white/5 hover:bg-rose-500/10 text-white/50 hover:text-rose-300'
+                  ? 'border border-[#E0DBCF] hover:border-red-300 bg-[#EFECE3] hover:bg-red-50 text-[#6B667A] hover:text-[#9F2F2D]'
+                  : 'border border-[#231B3A] hover:border-rose-500/40 bg-[#120D22] hover:bg-rose-500/10 text-white/50 hover:text-rose-300'
               }`}
             >
               <Trash2 className="w-3.5 h-3.5" />
-              Clear Log
+              <span>Purge Corpus</span>
             </button>
           )}
         </div>
       </div>
 
       {/* Filters & Search */}
-      <div className="flex flex-col sm:flex-row gap-3 pt-2">
+      <div className="flex flex-col sm:flex-row gap-3 pt-1">
         <div className="relative flex-1">
           <Search
             className={`w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 ${
-              isMinimal ? 'text-[#787774]' : 'text-white/30'
+              isMinimal ? 'text-[#6B667A]' : 'text-white/30'
             }`}
           />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search inspected targets..."
-            className={`w-full pl-9 pr-4 py-2 rounded-xl text-xs font-mono transition-colors focus:outline-none ${
+            placeholder="Search inspected target payloads..."
+            className={`w-full pl-9 pr-4 py-2 rounded-lg text-xs font-mono transition-colors focus:outline-none ${
               isMinimal
-                ? 'border border-[#EAEAEA] bg-[#FBFBFA] text-[#111111] placeholder-[#787774] focus:border-[#111111]'
-                : 'border border-white/10 bg-black/40 text-white placeholder-white/30 focus:border-cyan-400'
+                ? 'border border-[#E0DBCF] bg-[#EFECE3] text-[#201B34] placeholder-[#6B667A] focus:border-[#201B34]'
+                : 'border border-[#231B3A] bg-[#06040C] text-white placeholder-white/30 focus:border-purple-500'
             }`}
           />
         </div>
 
         <div
-          className={`flex items-center gap-1 p-1 rounded-xl text-xs font-mono ${
-            isMinimal ? 'border border-[#EAEAEA] bg-[#FBFBFA]' : 'border border-white/10 bg-black/40'
+          className={`flex items-center gap-1 p-1 rounded-lg text-xs font-mono ${
+            isMinimal ? 'border border-[#E0DBCF] bg-[#EFECE3]' : 'border border-[#231B3A] bg-[#0A0714]'
           }`}
         >
           <button
             onClick={() => setFilterType('all')}
-            className={`px-3 py-1 rounded-lg transition-all ${
+            className={`px-3 py-1 rounded transition-all ${
               filterType === 'all'
                 ? isMinimal
-                  ? 'bg-[#111111] text-white'
-                  : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
+                  ? 'bg-[#201B34] text-[#FAF8F2]'
+                  : 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
                 : isMinimal
-                ? 'text-[#787774] hover:text-[#111111]'
+                ? 'text-[#6B667A] hover:text-[#201B34]'
                 : 'text-white/40 hover:text-white'
             }`}
           >
@@ -131,13 +131,13 @@ export default function ScanHistory({ history, onRefresh, theme = 'cyber' }: Sca
           </button>
           <button
             onClick={() => setFilterType('url')}
-            className={`px-3 py-1 rounded-lg transition-all ${
+            className={`px-3 py-1 rounded transition-all ${
               filterType === 'url'
                 ? isMinimal
-                  ? 'bg-[#111111] text-white'
-                  : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
+                  ? 'bg-[#201B34] text-[#FAF8F2]'
+                  : 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
                 : isMinimal
-                ? 'text-[#787774] hover:text-[#111111]'
+                ? 'text-[#6B667A] hover:text-[#201B34]'
                 : 'text-white/40 hover:text-white'
             }`}
           >
@@ -145,13 +145,13 @@ export default function ScanHistory({ history, onRefresh, theme = 'cyber' }: Sca
           </button>
           <button
             onClick={() => setFilterType('email')}
-            className={`px-3 py-1 rounded-lg transition-all ${
+            className={`px-3 py-1 rounded transition-all ${
               filterType === 'email'
                 ? isMinimal
-                  ? 'bg-[#111111] text-white'
-                  : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
+                  ? 'bg-[#201B34] text-[#FAF8F2]'
+                  : 'bg-purple-500/20 text-purple-300 border border-purple-500/30'
                 : isMinimal
-                ? 'text-[#787774] hover:text-[#111111]'
+                ? 'text-[#6B667A] hover:text-[#201B34]'
                 : 'text-white/40 hover:text-white'
             }`}
           >
@@ -162,8 +162,8 @@ export default function ScanHistory({ history, onRefresh, theme = 'cyber' }: Sca
 
       {/* Table */}
       <div
-        className={`overflow-x-auto rounded-xl border ${
-          isMinimal ? 'border-[#EAEAEA] bg-white' : 'border-white/10 bg-black/30'
+        className={`overflow-x-auto rounded-lg border ${
+          isMinimal ? 'border-[#E0DBCF] bg-[#FAF8F2]' : 'border-[#231B3A] bg-[#06040C]'
         }`}
       >
         <table className="w-full text-left border-collapse text-xs font-mono">
@@ -171,8 +171,8 @@ export default function ScanHistory({ history, onRefresh, theme = 'cyber' }: Sca
             <tr
               className={`border-b uppercase text-[10px] tracking-wider ${
                 isMinimal
-                  ? 'border-[#EAEAEA] bg-[#F7F6F3] text-[#787774]'
-                  : 'border-white/10 bg-white/5 text-white/40'
+                  ? 'border-[#E0DBCF] bg-[#EFECE3] text-[#6B667A]'
+                  : 'border-[#231B3A] bg-[#0E0A1A] text-white/40'
               }`}
             >
               <th className="p-3">Type</th>
@@ -183,12 +183,12 @@ export default function ScanHistory({ history, onRefresh, theme = 'cyber' }: Sca
               <th className="p-3 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className={isMinimal ? 'divide-y divide-[#EAEAEA]' : 'divide-y divide-white/5'}>
+          <tbody className={isMinimal ? 'divide-y divide-[#E0DBCF]' : 'divide-y divide-[#1A142A]'}>
             {filtered.length === 0 ? (
               <tr>
                 <td
                   colSpan={6}
-                  className={`p-8 text-center ${isMinimal ? 'text-[#787774]' : 'text-white/30'}`}
+                  className={`p-8 text-center ${isMinimal ? 'text-[#6B667A]' : 'text-white/30'}`}
                 >
                   No scan records match current criteria.
                 </td>
@@ -202,28 +202,28 @@ export default function ScanHistory({ history, onRefresh, theme = 'cyber' }: Sca
                   <tr
                     key={item.id}
                     className={`transition-colors ${
-                      isMinimal ? 'hover:bg-[#FBFBFA]' : 'hover:bg-white/[0.02]'
+                      isMinimal ? 'hover:bg-[#EFECE3]/50' : 'hover:bg-white/[0.02]'
                     }`}
                   >
                     <td className="p-3 whitespace-nowrap">
                       <span
                         className={`inline-flex items-center gap-1 px-2 py-0.5 rounded border ${
                           isMinimal
-                            ? 'border-[#EAEAEA] bg-[#F7F6F3] text-[#111111]'
-                            : 'border-white/10 bg-white/5 text-white/70'
+                            ? 'border-[#E0DBCF] bg-[#EFECE3] text-[#201B34]'
+                            : 'border-[#231B3A] bg-[#0E0A1A] text-white/70'
                         }`}
                       >
                         {item.scan_type === 'url' ? (
-                          <Globe className={`w-3 h-3 ${isMinimal ? 'text-[#1F6C9F]' : 'text-cyan-400'}`} />
+                          <Globe className={`w-3 h-3 ${isMinimal ? 'text-[#4F46E5]' : 'text-purple-400'}`} />
                         ) : (
-                          <Mail className={`w-3 h-3 ${isMinimal ? 'text-[#6B46C1]' : 'text-indigo-400'}`} />
+                          <Mail className={`w-3 h-3 ${isMinimal ? 'text-[#4F46E5]' : 'text-cyan-400'}`} />
                         )}
                         {item.scan_type.toUpperCase()}
                       </span>
                     </td>
                     <td
                       className={`p-3 max-w-xs truncate ${
-                        isMinimal ? 'text-[#111111]' : 'text-white/80'
+                        isMinimal ? 'text-[#201B34]' : 'text-white/80'
                       }`}
                       title={item.full_input}
                     >
@@ -231,18 +231,18 @@ export default function ScanHistory({ history, onRefresh, theme = 'cyber' }: Sca
                     </td>
                     <td className="p-3 whitespace-nowrap">
                       <span
-                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full border text-[10px] font-bold ${
+                        className={`inline-flex items-center gap-1 px-2 py-0.5 rounded border text-[10px] font-bold ${
                           isPhish
                             ? isMinimal
-                              ? 'border-[#F7C5C8] bg-[#FDEBEC] text-[#9F2F2D]'
-                              : 'border-rose-500/40 bg-rose-500/20 text-rose-300'
+                              ? 'border-[#F8D7DA] bg-[#FDEBEC] text-[#9F2F2D]'
+                              : 'border-rose-500/40 bg-rose-500/15 text-rose-300'
                             : isSuspicious
                             ? isMinimal
-                              ? 'border-[#F5E0A6] bg-[#FBF3DB] text-[#956400]'
-                              : 'border-amber-500/40 bg-amber-500/20 text-amber-300'
+                              ? 'border-[#F5E79E] bg-[#FBF3DB] text-[#956400]'
+                              : 'border-amber-500/40 bg-amber-500/15 text-amber-300'
                             : isMinimal
-                            ? 'border-[#C8E6C9] bg-[#EDF3EC] text-[#346538]'
-                            : 'border-emerald-500/40 bg-emerald-500/20 text-emerald-300'
+                            ? 'border-[#DCD3F1] bg-[#ECE7F7] text-[#4F46E5]'
+                            : 'border-purple-500/40 bg-purple-500/15 text-purple-300'
                         }`}
                       >
                         {isPhish ? (
@@ -255,14 +255,14 @@ export default function ScanHistory({ history, onRefresh, theme = 'cyber' }: Sca
                         {item.verdict.toUpperCase()}
                       </span>
                     </td>
-                    <td className="p-3 whitespace-nowrap font-bold">
+                    <td className="p-3 whitespace-nowrap font-bold tabular-nums">
                       <span
                         className={
                           isPhish
                             ? isMinimal ? 'text-[#9F2F2D]' : 'text-rose-400'
                             : isSuspicious
                             ? isMinimal ? 'text-[#956400]' : 'text-amber-400'
-                            : isMinimal ? 'text-[#346538]' : 'text-emerald-400'
+                            : isMinimal ? 'text-[#4F46E5]' : 'text-purple-400'
                         }
                       >
                         {item.risk_score}
@@ -270,7 +270,7 @@ export default function ScanHistory({ history, onRefresh, theme = 'cyber' }: Sca
                     </td>
                     <td
                       className={`p-3 whitespace-nowrap text-[11px] ${
-                        isMinimal ? 'text-[#787774]' : 'text-white/40'
+                        isMinimal ? 'text-[#6B667A]' : 'text-white/40'
                       }`}
                     >
                       {item.created_at}
@@ -279,9 +279,9 @@ export default function ScanHistory({ history, onRefresh, theme = 'cyber' }: Sca
                       <button
                         onClick={() => handleDelete(item.id)}
                         disabled={deletingId === item.id}
-                        className={`p-1.5 rounded-lg transition-colors ${
+                        className={`p-1.5 rounded transition-colors ${
                           isMinimal
-                            ? 'hover:bg-[#FDEBEC] text-[#787774] hover:text-[#9F2F2D]'
+                            ? 'hover:bg-[#FDEBEC] text-[#6B667A] hover:text-[#9F2F2D]'
                             : 'hover:bg-rose-500/20 text-white/30 hover:text-rose-300'
                         }`}
                         title="Delete Record"

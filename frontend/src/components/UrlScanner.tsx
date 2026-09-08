@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Globe, ArrowRight, Loader2, Link as LinkIcon, X } from 'lucide-react';
+import { Globe, ArrowRight, Loader2, Link as LinkIcon, X, Eye, Sparkles } from 'lucide-react';
 import { scanUrl, ScanResult } from '../lib/api';
 import ResultCard from './ResultCard';
 
@@ -9,10 +9,10 @@ interface UrlScannerProps {
 }
 
 const SAMPLE_URLS = [
-  { label: 'Safe: GitHub Repo', url: 'https://github.com/nyzxis/personal-portfolio' },
-  { label: 'Phishing: Fake PayPal IP', url: 'http://192.168.1.105/paypal-login/verify.html' },
-  { label: 'Phishing: Apple ID Spoof', url: 'http://secure-appleid-verification-update.xyz/login.php' },
-  { label: 'Suspicious: Urgent Banking', url: 'http://chase-online-banking-security-alert.top/signin' },
+  { label: 'Safe: GitHub Repo', url: 'https://github.com/nyzxis/personal-portfolio', tag: 'BENIGN' },
+  { label: 'Phishing: Fake PayPal IP', url: 'http://192.168.1.105/paypal-login/verify.html', tag: 'IP-HOST' },
+  { label: 'Phishing: Apple ID Spoof', url: 'http://secure-appleid-verification-update.xyz/login.php', tag: 'HOMOGLYPH' },
+  { label: 'Suspicious: Urgent Banking', url: 'http://chase-online-banking-security-alert.top/signin', tag: 'URGENT' },
 ];
 
 export default function UrlScanner({ onScanComplete, theme = 'cyber' }: UrlScannerProps) {
@@ -46,35 +46,35 @@ export default function UrlScanner({ onScanComplete, theme = 'cyber' }: UrlScann
   return (
     <div className="space-y-6">
       <div
-        className={`transition-all duration-300 ${
+        className={`p-6 sm:p-8 transition-all duration-300 rounded-xl ${
           isMinimal
-            ? 'rounded-[10px] bg-white border border-[#EAEAEA] p-6 sm:p-8 shadow-[0_1px_3px_rgba(0,0,0,0.02)]'
-            : 'rounded-2xl border border-white/10 bg-[#0a0d16]/90 p-5 sm:p-7 backdrop-blur-xl'
+            ? 'minimalist-card'
+            : 'optical-panel'
         }`}
       >
         <div
           className={`flex items-center gap-2 text-xs font-mono tracking-wider uppercase mb-2 ${
-            isMinimal ? 'text-[#787774]' : 'text-cyan-400'
+            isMinimal ? 'text-[#6B667A]' : 'text-purple-400'
           }`}
         >
-          <Globe className="w-4 h-4" />
-          TARGET HYPERLINK INSPECTOR
+          <Eye className="w-4 h-4" />
+          <span>OPTICAL HYPERLENS // TARGET URL TELESCOPE</span>
         </div>
 
         <h2
           className={`text-xl sm:text-2xl font-bold tracking-tight ${
-            isMinimal ? 'font-serif-editorial text-[#111111] font-semibold text-2xl sm:text-3xl' : 'font-mono text-white'
+            isMinimal ? 'font-sans-clean text-[#201B34]' : 'font-mono text-white'
           }`}
         >
-          Inspect suspicious hyperlinks with Machine Learning
+          Spectrographic URL &amp; Hyperlink Classifier
         </h2>
 
         <p
-          className={`text-xs sm:text-sm font-mono mt-1.5 max-w-[65ch] leading-relaxed ${
-            isMinimal ? 'text-[#787774]' : 'text-white/50'
+          className={`text-xs sm:text-sm font-mono mt-1.5 max-w-[70ch] leading-relaxed ${
+            isMinimal ? 'text-[#6B667A]' : 'text-white/60'
           }`}
         >
-          Extracts lexical telemetry, structural entropy, numerical IP host indicators, and deceptive social engineering cues.
+          Scans lexical entropy, suspicious top-level domains (.xyz, .top), raw IP hosts, homoglyphs, and embedded phishing heuristics.
         </p>
 
         {/* Search Bar */}
@@ -88,7 +88,7 @@ export default function UrlScanner({ onScanComplete, theme = 'cyber' }: UrlScann
           <div className="relative flex-1">
             <div
               className={`absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none ${
-                isMinimal ? 'text-[#787774]' : 'text-white/30'
+                isMinimal ? 'text-[#6B667A]' : 'text-purple-400/60'
               }`}
             >
               <LinkIcon className="w-4 h-4" />
@@ -97,11 +97,11 @@ export default function UrlScanner({ onScanComplete, theme = 'cyber' }: UrlScann
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://example.com/login or http://192.168.1.1/..."
-              className={`w-full pl-10 pr-10 py-3 text-sm font-mono transition-all ${
+              placeholder="Paste suspicious target URL e.g. http://192.168.1.105/login..."
+              className={`w-full pl-10 pr-10 py-3.5 text-sm font-mono transition-all rounded-lg ${
                 isMinimal
-                  ? 'bg-[#F7F6F3] border border-[#EAEAEA] text-[#111111] placeholder-[#787774]/60 rounded-[6px] focus:outline-none focus:border-[#111111] focus:bg-white'
-                  : 'rounded-xl border border-white/15 bg-black/60 text-white placeholder-white/30 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20'
+                  ? 'bg-[#EFECE3] border border-[#E0DBCF] text-[#201B34] placeholder-[#6B667A]/60 focus:outline-none focus:border-[#201B34]'
+                  : 'bg-[#06040C] border border-[#231B3A] text-white placeholder-white/30 focus:outline-none focus:border-purple-500 focus:shadow-[0_0_24px_rgba(139,92,246,0.25)]'
               }`}
             />
             {url && (
@@ -109,7 +109,7 @@ export default function UrlScanner({ onScanComplete, theme = 'cyber' }: UrlScann
                 type="button"
                 onClick={() => setUrl('')}
                 className={`absolute inset-y-0 right-0 pr-3.5 flex items-center ${
-                  isMinimal ? 'text-[#787774] hover:text-[#111111]' : 'text-white/30 hover:text-white'
+                  isMinimal ? 'text-[#6B667A] hover:text-[#201B34]' : 'text-white/40 hover:text-white'
                 }`}
               >
                 <X className="w-4 h-4" />
@@ -120,65 +120,70 @@ export default function UrlScanner({ onScanComplete, theme = 'cyber' }: UrlScann
           <button
             type="submit"
             disabled={loading}
-            className={`inline-flex items-center justify-center gap-2 px-6 py-3 font-mono font-bold text-xs uppercase tracking-wider transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed ${
+            className={`inline-flex items-center justify-center gap-2 px-6 py-3.5 font-mono font-bold text-xs uppercase tracking-wider rounded-lg transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed ${
               isMinimal
-                ? 'rounded-[6px] bg-[#111111] text-white hover:bg-[#2F3437]'
-                : 'rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-black shadow-[0_0_20px_rgba(6,182,212,0.3)]'
+                ? 'bg-[#201B34] text-[#FAF8F2] hover:bg-[#322A50]'
+                : 'bg-purple-600 hover:bg-purple-500 text-white shadow-[0_0_20px_rgba(139,92,246,0.35)]'
             }`}
           >
             {loading ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                ANALYZING...
+                <span>INSPECTING...</span>
               </>
             ) : (
               <>
-                SCAN URL
+                <span>ENGAGE TELESCOPE</span>
                 <ArrowRight className="w-4 h-4" />
               </>
             )}
           </button>
         </form>
 
-        {/* Quick Sample Presets */}
-        <div
-          className={`mt-4 pt-4 border-t flex flex-wrap items-center gap-2 text-xs font-mono ${
-            isMinimal ? 'border-[#EAEAEA]' : 'border-white/10'
-          }`}
-        >
-          <span className={`text-[11px] ${isMinimal ? 'text-[#787774]' : 'text-white/40'}`}>
-            Quick presets:
-          </span>
-          {SAMPLE_URLS.map((sample, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => {
-                setUrl(sample.url);
-                handleScan(sample.url);
-              }}
-              className={`px-2.5 py-1 text-[11px] transition-all active:scale-[0.97] ${
-                isMinimal
-                  ? 'rounded-[4px] bg-[#F7F6F3] border border-[#EAEAEA] text-[#111111] hover:bg-[#EBEAE5]'
-                  : 'rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 hover:border-cyan-500/40 text-white/70 hover:text-white'
-              }`}
-            >
-              {sample.label}
-            </button>
-          ))}
-        </div>
-
+        {/* Error Notice */}
         {error && (
           <div
-            className={`mt-4 p-3 rounded-[6px] text-xs font-mono ${
-              isMinimal ? 'bg-[#FDEBEC] border border-[#F8D7DA] text-[#9F2F2D]' : 'border border-rose-500/30 bg-rose-500/10 text-rose-300'
+            className={`mt-4 p-3 rounded-lg text-xs font-mono border ${
+              isMinimal
+                ? 'bg-[#FDEBEC] border-[#F8D7DA] text-[#9F2F2D]'
+                : 'bg-rose-500/10 border-rose-500/30 text-rose-300'
             }`}
           >
             {error}
           </div>
         )}
+
+        {/* Benchmark Sample Targets */}
+        <div className="mt-5 pt-4 border-t border-white/10 flex flex-wrap items-center gap-2">
+          <span className={`text-xs font-mono mr-1 ${isMinimal ? 'text-[#6B667A]' : 'text-white/40'}`}>
+            Test Targets:
+          </span>
+          {SAMPLE_URLS.map((sample) => (
+            <button
+              key={sample.url}
+              type="button"
+              onClick={() => {
+                setUrl(sample.url);
+                handleScan(sample.url);
+              }}
+              className={`px-2.5 py-1 rounded text-xs font-mono transition-all flex items-center gap-1.5 ${
+                isMinimal
+                  ? 'bg-[#EFECE3] border border-[#E0DBCF] text-[#201B34] hover:border-[#201B34]'
+                  : 'bg-[#120D22] border border-[#231B3A] text-white/70 hover:text-white hover:border-purple-500/40'
+              }`}
+            >
+              <span>{sample.label}</span>
+              <span className={`text-[9px] px-1 py-0.2 rounded ${
+                isMinimal ? 'bg-[#E5E0D5] text-[#201B34]' : 'bg-white/5 text-purple-300 border border-purple-500/20'
+              }`}>
+                {sample.tag}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
 
+      {/* Forensic Verdict Result Card */}
       {result && <ResultCard result={result} type="url" theme={theme} />}
     </div>
   );
